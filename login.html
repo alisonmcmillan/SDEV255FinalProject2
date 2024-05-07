@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
     <title>Navigation Bar</title>
     <style>
         .navbar {
@@ -43,7 +44,8 @@
             margin: 0;
         }
 
-        .navbar a, .dropdown .dropbtn {
+        .navbar a,
+        .dropdown .dropbtn {
             display: inline-block;
         }
 
@@ -52,7 +54,7 @@
             position: absolute;
             background-color: #f9f9f9;
             min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
 
@@ -74,29 +76,32 @@
         }
     </style>
 </head>
+
 <body>
 
-  <div class="navbar">
-    <a href="home.html">Home</a>
-    <a href="login.html">Login</a>
-    <div class="dropdown">
-      <button class="dropbtn"><a href="courses.html">Courses</a>
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a href="math.html">Math</a>
-        <a href="english.html">English</a>
-        <a href="electives.html">Electives</a>
-      </div>
+    <div class="navbar">
+        <a href="home.html">Home</a>
+        <a href="login.html">Login</a>
+        <div class="dropdown">
+            <button class="dropbtn"><a href="courses.html">Courses</a>
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="math.html">Math</a>
+                <a href="english.html">English</a>
+                <a href="electives.html">Electives</a>
+            </div>
+        </div>
+        <a href="myaccount.html">My Account</a>
     </div>
-    <a href="myaccount.html">My Account</a>
-  </div>
 
 </body>
+
 </html>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -104,16 +109,52 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="/login" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
+    <div id="app">
+        <h1>Login</h1>
+        <form @submit.prevent="loginStudent" method="post">
+            <h2>Login as a Student</h2>
+            <input type="text" v-model="studentUsername" name="student_username" placeholder="Student Username"
+                required>
+            <input type="password" v-model="studentPassword" name="student_password" placeholder="Password" required>
+            <input type="submit" value="Login as Student">
+        </form>
+
+        <form @submit.prevent="loginTeacher" method="post">
+            <h2>Login as a Teacher</h2>
+            <input type="text" v-model="teacherUsername" name="teacher_username" placeholder="Teacher Username"
+                required>
+            <input type="password" v-model="teacherPassword" name="teacher_password" placeholder="Password" required>
+            <input type="submit" value="Login as Teacher">
         </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                studentUsername: '',
+                studentPassword: '',
+                teacherUsername: '',
+                teacherPassword: ''
+            },
+            methods: {
+                loginStudent() {
+                    // Implement student login logic here
+                    console.log('Student login');
+                    // Redirect to student dashboard (myaccount.html) after successful login
+                    window.location.href = 'myaccount.html?role=student';
+                },
+                loginTeacher() {
+                    // Implement teacher login logic here
+                    console.log('Teacher login');
+                    // Redirect to teacher dashboard (myaccount.html) after successful login
+                    window.location.href = 'myaccount.html?role=teacher';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
