@@ -98,96 +98,91 @@
       <header>
           <h1>Course Index</h1>
       </header>
-      <main id="course-container">
-          <!-- Courses will be dynamically added here -->
-      </main>
-      <div>
-          <button onclick="createCourse()">Create Course</button>
-      </div>
+        <main id="course-container">
+            <!-- Courses will be dynamically added here -->
+        </main>
 
-      <script>
-          let courses = [
-              { id: 1, title: "College Algebra", description: "Credit Hours 3", url: "math.html" },
-              { id: 2, title: "Calculus I", description: "Credit Hours 3", url: "math.html" },
-              { id: 1, title: "English Composition", description: "Credit Hours 3", url: "english.html" },
-              { id: 1, title: "Fundamentals of Public Speaking", description: "Credit Hours 3", url: "english.html" },
-              { id: 1, title: "Software Development Jav", description: "Credit Hours 3", url: "electives.html" },
-              { id: 1, title: "Mobile Application Development", description: "Credit Hours 4", url: "electives.html" }
-          ];
+        <script>
+            let currentUser = "visitor"; // Set the current user role here (e.g., "teacher", "student", or "visitor")
 
-          function renderCourses() {
-              const courseContainer = document.getElementById("course-container");
-              courseContainer.innerHTML = ""; 
+            let courses = [
+                { id: 1, title: "College Algebra", description: "Credit Hours 3", url: "math.html" },
+                { id: 2, title: "Calculus I", description: "Credit Hours 3", url: "math.html" },
+                { id: 3, title: "English Composition", description: "Credit Hours 3", url: "english.html" },
+                { id: 4, title: "Fundamentals of Public Speaking", description: "Credit Hours 3", url: "english.html" },
+                { id: 5, title: "Software Development Jav", description: "Credit Hours 3", url: "electives.html" },
+                { id: 6, title: "Mobile Application Development", description: "Credit Hours 4", url: "electives.html" }
+            ];
 
-              courses.forEach(course => {
-                  const courseCard = document.createElement("div");
-                  courseCard.classList.add("course-card");
+            function renderCourses() {
+                const courseContainer = document.getElementById("course-container");
+                courseContainer.innerHTML = "";
 
-                  const title = document.createElement("h2");
-                  title.textContent = course.title;
+                courses.forEach(course => {
+                    const courseCard = document.createElement("div");
+                    courseCard.classList.add("course-card");
 
-                  const description = document.createElement("p");
-                  description.textContent = course.description;
+                    const title = document.createElement("h2");
+                    title.textContent = course.title;
 
-                  // Add buttons for updating and deleting a course
-                  const updateButton = document.createElement("button");
-                  updateButton.textContent = "Update";
-                  updateButton.addEventListener("click", () => updateCourse(course.id));
+                    const description = document.createElement("p");
+                    description.textContent = course.description;
 
-                  const deleteButton = document.createElement("button");
-                  deleteButton.textContent = "Delete";
-                  deleteButton.addEventListener("click", () => deleteCourse(course.id));
+                    // Change the button to an anchor tag with the course URL
+                    const learnMoreLink = document.createElement("a");
+                    learnMoreLink.textContent = "Learn More";
+                    learnMoreLink.setAttribute("href", course.url);
+                    learnMoreLink.setAttribute("target", "_blank"); // Open link in a new tab
+                    learnMoreLink.style.marginLeft = "10px"; // Add some spacing
+                    learnMoreLink.style.textDecoration = "none"; // Remove underline
+                    learnMoreLink.style.color = "blue"; // Change text color
+                    learnMoreLink.style.cursor = "pointer"; // Change cursor style
 
-                  // Change the button to an anchor tag with the course URL
-                  const learnMoreLink = document.createElement("a");
-                  learnMoreLink.textContent = "Learn More"; // Changed from "Update Link"
-                  learnMoreLink.setAttribute("href", course.url);
-                  learnMoreLink.setAttribute("target", "_blank"); // Open link in a new tab
-                  learnMoreLink.style.marginLeft = "10px"; // Add some spacing
-                  learnMoreLink.style.textDecoration = "none"; // Remove underline
-                  learnMoreLink.style.color = "blue"; // Change text color
-                  learnMoreLink.style.cursor = "pointer"; // Change cursor style
+                    courseCard.appendChild(title);
+                    courseCard.appendChild(description);
 
-                  courseCard.appendChild(title);
-                  courseCard.appendChild(description);
-                  courseCard.appendChild(updateButton);
-                  courseCard.appendChild(deleteButton);
-                  courseCard.appendChild(learnMoreLink); // Append the "Learn More" link last
+                    if (currentUser === "teacher") {
+                        // Render update and delete buttons only for teachers
+                        const updateButton = document.createElement("button");
+                        updateButton.textContent = "Update";
+                        updateButton.addEventListener("click", () => updateCourse(course.id));
+                        courseCard.appendChild(updateButton);
 
-                  courseContainer.appendChild(courseCard);
-              });
-          }
+                        const deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Delete";
+                        deleteButton.addEventListener("click", () => deleteCourse(course.id));
+                        courseCard.appendChild(deleteButton);
+                    }
 
-          function createCourse() {
-              const newCourse = {
-                  id: courses.length + 1,
-                  title: "New Course",
-                  description: "Description of New Course",
-                  url: "#" // Initially set to "#" or any default URL
-              };
-              courses.push(newCourse);
-              renderCourses();
-          }
+                    courseCard.appendChild(learnMoreLink); // Append the "Learn More" link last
 
-          function updateCourse(id) {
-              const newTitle = prompt("Enter the new title for the course:");
-              const newDescription = prompt("Enter the new description for the course:");
-              const courseToUpdate = courses.find(course => course.id === id);
-              if (courseToUpdate && newTitle && newDescription) {
-                  courseToUpdate.title = newTitle;
-                  courseToUpdate.description = newDescription;
-                  renderCourses();
-              }
-          }
+                    courseContainer.appendChild(courseCard);
+                });
+            }
 
-          function deleteCourse(id) {
-              if (confirm("Are you sure you want to delete this course?")) {
-                  courses = courses.filter(course => course.id !== id);
-                  renderCourses();
-              }
-          }
+            document.addEventListener("DOMContentLoaded", renderCourses);
 
-          document.addEventListener("DOMContentLoaded", renderCourses);
-      </script>
-  </body>
+            function updateCourse(id) {
+                if (currentUser === "teacher") {
+                    const newTitle = prompt("Enter the new title for the course:");
+                    const newDescription = prompt("Enter the new description for the course:");
+                    const courseToUpdate = courses.find(course => course.id === id);
+                    if (courseToUpdate && newTitle && newDescription) {
+                        courseToUpdate.title = newTitle;
+                        courseToUpdate.description = newDescription;
+                        renderCourses();
+                    }
+                }
+            }
+
+            function deleteCourse(id) {
+                if (currentUser === "teacher") {
+                    if (confirm("Are you sure you want to delete this course?")) {
+                        courses = courses.filter(course => course.id !== id);
+                        renderCourses();
+                    }
+                }
+            }
+        </script>
+</body>
 </html>
